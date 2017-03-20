@@ -1,0 +1,29 @@
+        # Activate SSL
+        ssl on;
+
+        # TLS v1.2 only
+        ssl_protocols TLSv1.2;
+
+        # prefer order of ciphers
+        ssl_prefer_server_ciphers on;
+
+        # strongest ciphers first, explicitly blacklisting ciphers
+        #ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+        ssl_ciphers "HIGH:!aNULL:!MD5:!3DES:!CAMELLIA:!AES128";
+        ssl_ecdh_curve secp384r1;
+
+        # Activate OCSP Stappling support
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        # Disable preloading HSTS for now.  You can use the commented out header line that includes
+        # the "preload" directive if you understand the implications.
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+
+        # Diffie-Hellman parameters location
+        ssl_dhparam ssl/dhparams.pem;
+
+        # Enabling caching for performance optimization
+        ssl_session_cache shared:SSL:10m;
+        ssl_session_timeout 10m;
+        ssl_session_tickets off;

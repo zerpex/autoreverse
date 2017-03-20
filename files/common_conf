@@ -1,0 +1,43 @@
+        # Path to the root of your installation
+        root /var/www/html;
+
+        # DNS resolver
+        resolver 8.8.8.8 8.8.4.4 valid=300s;
+        resolver_timeout 5s;
+
+        # Set max upload size
+        client_max_body_size 20G;
+        fastcgi_buffers 64 8K;
+
+        # Set index files
+        index index.php index.html;
+
+        keepalive_timeout 70s;
+
+        # Disable gzip to avoid the removal of the ETag header
+        gzip off;
+
+        # Allow letsencrypt control access
+        location ~ /\.well-known/acme-challenge {
+                root /usr/share/nginx/html;
+                allow all;
+        }
+
+        ## If no favicon exists return a 204 (no content error).
+                location = /favicon.ico {
+                try_files $uri =204;
+                log_not_found off;
+                access_log off;
+        }
+
+        # Let search engines access to robot.txt
+        location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
+        }
+
+        # Protecting sensitive files from the evil outside world
+        location ~ ^/(data|config|\.ht|db_structure.xml|README) {
+                deny all;
+        }
